@@ -1,546 +1,352 @@
-# desafio-backend-05-pdv-dbe-b2b-t07-ifood
 ![](https://i.imgur.com/xG74tOh.png)
 
-# Desafio Módulo 5 - Backend
+# Ponto de Venda API 🖥️
+<div align="center">
+<img src="./media/logo.jpg" width="640" height="420">
+</div>
 
-Seja bem vindo(a) ao desafio do módulo 5.
+## Sobre o projeto
 
-Sua tarefa como desenvolvedor(a) será criar uma API para um PDV (Frente de Caixa). Esse será um projeto piloto, ou seja, no futuro outras funcionalidades serão implementadas.
+Este projeto é resultado do Desafio do Módulo 5 (Banco de dados e API's), do curso de Backend da [Cubos Academy](https://cubos.academy/cursos/desenvolvimento-de-software).
+
+A aplicação conta com diversas funcionalidades, permitindo ao usuário se cadastrar, logar, visualizar e editar o seu perfil. O sistema também conta com autenticação JWT e criptografia através do Bcrypt, o que garante segurança na transferência de informações e no armazenamento de senhas.
 
 
-**Importante 1: Sempre que a validação de uma requisição falhar, responda com código de erro e mensagem adequada à situação, ok?**
+## Tecnologias Utilizadas
 
-**Importante 2: Para endpoints de cadastro/atualização os objetos de requisição devem conter as propriedades equivalentes as colunas das tabelas.**
+[![My Skills](https://skillicons.dev/icons?i=js,nodejs,postman,express,jest,git,github,postgres,swagger)](https://skillicons.dev)
 
-**Exemplo:**
 
-```javascript
-// Corpo da requisição para cadastro de usuário (body)
-{
-    "nome": "José",
-    "email": "jose@email.com",
-    "senha": "jose"
-}
+## Funcionalidades
+
+1. Cadastrar Usuário
+2. Fazer Login
+3. Detalhar Perfil do Usuário Logado
+4. Editar Perfil do Usuário Logado
+5. Listar Categorias
+6. Cadastrar Produto
+7. Editar Dados do Produto
+8. Listar Produtos
+9. Detalhar Produto
+10. Excluir Produto
+11. Cadastrar Cliente
+12. Editar Dados do Cliente
+13. Listar Clientes
+14. Detalhar Cliente
+15. Cadastrar Pedido
+16. Listar Pedidos
+
+## Como executar o projeto
+
+⚠️ Para a execução do projeto, é necessário ter o [Node.js](https://nodejs.org/en) instalado em sua máquina.
+
+1) Faça um clone do projeto
+
+```bash
+git clone https://github.com/nsRenan/pontodevenda.git
 ```
 
-**ATENÇÃO: Todos os endpoints deverão atender os requisitos citados acima.**
+2) Abra o diretório do projeto
 
-## **Banco de dados**
-
-Você precisa criar um Banco de Dados PostgreSQL chamado `pdv`.
-
-**IMPORTANTE: Deverá ser criado no projeto o arquivo SQL que deverá ser o script contendo os comandos de criação das tabelas respeitando os nomes das tabelas e colunas respectivamente, além de, conter os comandos para a inserção das categorias que devem ser previamente cadastradas (estão citadas na 1ª Sprint no item Listar Categorias).**
-
-## **Requisitos obrigatórios**
-
--   A API a ser criada deverá acessar o banco de dados a ser criado `pdv` para persistir e manipular os dados de categorias, clientes, pedidos, produtos e usuários utilizados pela aplicação.
--   O campo id das tabelas no banco de dados deve ser auto incremento, chave primária e não deve permitir edição uma vez criado.
--   Qualquer valor monetário deverá ser representado em centavos (Ex.: R$ 10,00 reais = 1000)
-
-## **Status Codes**
-
-Abaixo, listamos os possíveis **_status codes_** esperados como resposta da API.
-
-```javascript
-// 200 (OK) = requisição bem sucedida
-// 201 (Created) = requisição bem sucedida e algo foi criado
-// 204 (No Content) = requisição bem sucedida, sem conteúdo no corpo da resposta
-// 400 (Bad Request) = o servidor não entendeu a requisição pois está com uma sintaxe/formato inválido
-// 401 (Unauthorized) = o usuário não está autenticado (logado)
-// 403 (Forbidden) = o usuário não tem permissão de acessar o recurso solicitado
-// 404 (Not Found) = o servidor não pode encontrar o recurso solicitado
-// 500 (Internal Server Error) = erro inesperado do servidor
+```bash
+cd pontodevenda
 ```
 
-<details>
-<summary>1ª Sprint</summary>
-<br>
+3) Instale as dependências utilizando o comando:
+
+```bash
+npm install
+```
+
+4) Inicialize o servidor local:
+
+```bash
+npm run dev
+```
+5) Rodar os testes :
+
+```bash
+npm run test
+```
+
+## Dependências - Versões
+| Dependências  | Versão |
+| :------------- | ------- |
+| Express        | 4.18.2  |
+| Nodemon        | 3.0.1   |
+| PG             | 8.11.3  |
+| Dotenv         | 16.3.1  |
+| Json Web Token | 9.0.2   |
+| Knex           | 3.0.1   |
+| Joi            | 17.11.0 |
+| Cors           | 2.8.5   |
+| Bcrypt         | 5.1.1   |
+| Aws sdk        | 2.1479.0|
+| Multer         |1.4.5-lts.1|
+| Swagger        | 5.0.0   |
+| Swagger AutoGen| 2.23.6  |
+| Handlebars     | 4.7.8  |
+| Nodemailer     | 6.9.7  |
+| Jest           | 29.7.0 |
+| Supertest      | 6.3.3  |
+
+## Verificando os endpoints
 
 <details>
-<summary><b>Banco de Dados</b></summary>
-<br>
 
-Crie as seguintes tabelas e colunas abaixo: 
-
-**ATENÇÃO! Os nomes das tabelas e das colunas a serem criados devem seguir exatamente os nomes listados abaixo.**
-
--   usuarios
-    -   id
-    -   nome
-    -   email (campo único)
-    -   senha
--   categorias
-    -   id
-    -   descricao
-
-</details>
-
-<details>
-<summary><b>Listar categorias</b></summary>
-
-#### `GET` `/categoria`
-
-Essa é a rota que será chamada quando o usuário quiser listar todas as categorias cadastradas.
-
-As categorias a seguir precisam ser previamente cadastradas para que sejam listadas no endpoint de listagem das categorias.
-
-## **Categorias**
-
--   Informática
--   Celulares
--   Beleza e Perfumaria
--   Mercado
--   Livros e Papelaria
--   Brinquedos
--   Moda
--   Bebê
--   Games
-
-</details>
-
-<details>
-<summary><b>Cadastrar usuário</b></summary>
+1) **Cadastrar usuário**
 
 #### `POST` `/usuario`
 
-Essa é a rota que será utilizada para cadastrar um novo usuário no sistema.
+ Esse endpoint permite o cadastro do usuário.
 
-Critérios de aceite:
+Validações:
 
-    - Validar os campos obrigatórios: 
-        - nome
-        - email
-        - senha
-    - A senha deve ser criptografada utilizando algum algoritmo de criptografia confiável.
-    - O campo e-mail no banco de dados deve ser único para cada registro, não permitindo dois usuários possuírem o mesmo e-mail.
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se o e-mail informado já existe;
+    -   Criptografar a senha antes de persistir no banco de dados;
+    -   Cadastrar o usuário no banco de dados.
 
-</details>
-
-<details>
-<summary><b>Efetuar login do usuário</b></summary>
+2) **Login do usuário**
 
 #### `POST` `/login`
 
-Essa é a rota que permite o usuário cadastrado realizar o login no sistema.
+Esse endpoint realiza o login do usuário no sistema utilizando o email e senha cadastrados.
 
-Critérios de aceite:
+Validações:
 
-    - Validar se o e-mail e a senha estão corretos para o usuário em questão.
-    - Gerar um token de autenticação para o usuário.
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Verificar se o e-mail informado existe;
+    -   Validar e-mail e senha;
+    -   Criar token de autenticação com id do usuário.
 
-</details>
-
----
-
-## **ATENÇÃO**: Todas as funcionalidades (endpoints) a seguir, a partir desse ponto, deverão exigir o token de autenticação do usuário logado, recebendo no header com o formato Bearer Token. Portanto, em cada funcionalidade será necessário validar o token informado.
-
----
-
-<details>
-<summary><b>Detalhar perfil do usuário logado</b></summary>
+3) **Detalhar usuário**
 
 #### `GET` `/usuario`
 
-Essa é a rota que permite o usuário logado a visualizar os dados do seu próprio perfil, de acordo com a validação do token de autenticação.
+Esse endpoint deverá apresentar os dados do usuário logado no sistema.
 
-</details>
+Validações:
 
-<details>
-<summary><b>Editar perfil do usuário logado</b></summary>
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   O usuário deverá ser identificado através do ID presente no token de validação;
+    -   Consultar o usuário no banco de dados pelo id contido no token informado;
+
+4) **Editar perfil do usuário**
 
 #### `PUT` `/usuario`
 
-Essa é a rota que permite o usuário logado atualizar informações de seu próprio cadastro, de acordo com a validação do token de autenticação.
+Esse endpoint deve atualizar os dados do usuário logado no sistema.
 
-Critérios de aceite:
+Validações:
 
-    - Validar os campos obrigatórios: 
-        - nome
-        - email
-        - senha
-    - A senha deve ser criptografada utilizando algum algoritmo de criptografia confiável.
-    - O campo e-mail no banco de dados deve ser único para cada registro, não permitindo dois usuários possuírem o mesmo e-mail.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   O usuário deverá ser identificado através do ID presente no token de validação;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se o novo e-mail já existe no banco de dados para outro usuário;
+    -   Impedir a alteração do e-mail caso o mesmo exista para outro usuário no banco de dados; (o campo de email deve ser sempre único no banco de dados);
+    -   Criptografar a senha antes de salvar no banco de dados;
+    -   Atualizar as informações do usuário no banco de dados;
 
-</details>
+5) **Listar categorias**
 
-<details>
-<summary><b>Efetuar deploy da aplicação</b></summary>
-<br>
+#### `GET` `/categoria`
 
-Fazer deploy do projeto e disponibilizar a URL.
+Esse endpoint deverá listar todas as categorias disponíveis para cadastrar as transações.
 
-</details>
+Validações:
 
-</details>
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   O endpoint deverá responder com um array de todas as categorias cadastradas no sistema;
+    -  Caso não exista nenhuma categoria cadastrada, deverá responder com array vazio.
 
----
-
-<details>
-<summary>2ª Sprint</summary>
-<br>
-
-<details>
-<summary><b>Banco de Dados</b></summary>
-<br>
-
-Crie as seguintes tabelas e colunas abaixo: 
-
-**ATENÇÃO! Os nomes das tabelas e das colunas a serem criados devem seguir exatamente os nomes listados abaixo.**
-
--   produtos
-    -   id
-    -   descricao
-    -   quantidade_estoque
-    -   valor
-    -   categoria_id
--   clientes
-    -   id
-    -   nome
-    -   email (campo único)
-    -   cpf (campo único) 
-    -   cep 
-    -   rua
-    -   numero
-    -   bairro
-    -   cidade
-    -   estado
-
-</details>
-
----
-
-## **ATENÇÃO**: Todas as funcionalidades (endpoints) a seguir, a partir desse ponto, deverão exigir o token de autenticação do usuário logado, recebendo no header com o formato Bearer Token. Portanto, em cada funcionalidade será necessário validar o token informado.
-
----
-
-<details>
-<summary><b>Cadastrar Produto</b></summary>
+6. **Cadastrar produto**
 
 #### `POST` `/produto`
 
-Essa é a rota que permite o usuário logado cadastrar um novo produto no sistema.
+ Esse endpoint permite o cadastro do produto.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar os campos obrigatórios:
-        -   descricao
-        -   quantidade_estoque
-        -   valor
-        -   categoria_id
-    -   A categoria informada na qual o produto será vinculado deverá existir.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se a categoria informada existe;
+    -   Caso seja enviada imagem na requisição, a mesma deverá ser processada e armazenada no servidor de armazenamento Blackblaze;
+    -   Cadastrar o produto no banco de dados.
 
-</details>
-
-<details>
-<summary><b>Editar dados do produto</b></summary>
+7. **Editar dados do produto**
 
 #### `PUT` `/produto/:id`
 
-Essa é a rota que permite o usuário logado a atualizar as informações de um produto cadastrado.
+Esse endpoint deve atualizar os dados do produto do id informado como parâmetro na rota.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar se existe produto para o id enviado como parâmetro na rota.
-    -   Validar os campos obrigatórios:
-        -   descricao
-        -   quantidade_estoque
-        -   valor
-        -   categoria_id
-    -   A categoria informada na qual o produto será vinculado deverá existir.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar se existe produto para o id enviado como parâmetro na rota;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se a categoria informada existe;
+    -   Caso seja enviada imagem na requisição, a mesma deverá ser processada e armazenada no servidor de armazenamento Blackblaze;
+    -   Atualizar as informações do produto no banco de dados.
 
-</details>
-
-<details>
-<summary><b>Listar Produtos</b></summary>
+8. **Listar produtos**
 
 #### `GET` `/produto`
 
-Essa é a rota que será chamada quando o usuário logado quiser listar todos os produtos cadastrados.
+Esse endpoint deverá listar todas os produtos disponíveis, com filtro opcional de categoria.
 
-Deveremos incluir um parâmetro do tipo query **categoria_id** para que seja possível consultar produtos por categorias, de modo, que serão filtrados de acordo com o id de uma categoria.
+Validações:
 
-Critérios de aceite:
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Caso não seja informado um id de categoria como parâmetro do tipo query, o endpoint deverá responder com todos os produtos cadastrados no sistema;
+    -  Caso seja informado um id de categoria como parâmetro do tipo query, o endpoint deverá responder com todos os produtos cadastrados no sistema com a categoria informada.
 
-    - Caso seja enviado o parâmetro do tipo query **categoria_id**, filtrar os produtos de acordo com a categoria, caso o id de categoria informada exista.
-    - Caso não seja informado o parâmetro do tipo query **categoria_id** todos os produtos cadastrados deverão ser retornados.
-
-</details>
-
-<details>
-<summary><b>Detalhar Produto</b></summary>
+9. **Detalhar produto**
 
 #### `GET` `/produto/:id`
 
-Essa é a rota que permite o usuário logado obter um dos produtos cadastrados.  
+Esse endpoint deverá apresentar os dados do produto do id informado como parâmetro na rota.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar se existe produto para o id enviado como parâmetro na rota.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar se o id de produto informado existe;
+    -   Consultar o produto no banco de dados pelo id dado.
 
-</details>
-
-<details>
-<summary><b>Excluir Produto por ID</b></summary>
+10. **Excluir produto**
 
 #### `DELETE` `/produto/:id`
 
-Essa é a rota que será chamada quando o usuário logado quiser excluir um de seus produtos cadastrados.  
+Esse endpoint deverá excluir o produto do id informado como parâmetro na rota.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar se existe produto para o id enviado como parâmetro na rota.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar se o id de produto informado existe;
+    -   Validar se o produto que está sendo excluído está vinculado a algum pedido, 
+    -   Caso esteja vinculado a algum pedido, o produto não poderá ser excluído;
+    -   Caso não esteja, deletar o produto no banco de dados pelo id dado e deletar a imagem do produto(caso possua) do servidor.
 
-</details>
-
-<details>
-<summary><b>Cadastrar Cliente</b></summary>
+11. **Cadastrar cliente**
 
 #### `POST` `/cliente`
 
-Essa é a rota que permite usuário logado cadastrar um novo cliente no sistema.
+ Esse endpoint permite o cadastro do produto.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar os campos obrigatórios:
-        -   nome
-        -   email
-        -   cpf
-    -   O campo e-mail no banco de dados deve ser único para cada registro, não permitindo dois clientes possuírem o mesmo e-mail.
-    -   O campo cpf no banco de dados deve ser único para cada registro, não permitindo dois clientes possuírem o mesmo cpf.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se o e-mail e cpf informados já existem;
+    -   Cadastrar o cliente no banco de dados.
 
-</details>
-
-<details>
-<summary><b>Editar dados do cliente</b></summary>
+12. **Editar dados do cliente**
 
 #### `PUT` `/cliente/:id`
 
-Essa é a rota que permite o usuário realizar atualização de um cliente cadastrado.
+Esse endpoint deve atualizar os dados do cliente do id informado como parâmetro na rota.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar se existe cliente para o id enviado como parâmetro na rota.
-    -   Validar os campos obrigatórios:
-        -   nome
-        -   email
-        -   cpf
-    -   O campo e-mail no banco de dados deve ser único para cada registro, não permitindo dois clientes possuírem o mesmo e-mail.
-    -   O campo cpf no banco de dados deve ser único para cada registro, não permitindo dois clientes possuírem o mesmo cpf.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar se existe cliente para o id enviado como parâmetro na rota;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se o novo e-mail ou cpf já existem no banco de dados para outro cliente;
+    -   Impedir a alteração do e-mail ou cpf caso já existam para outro cliente no banco de dados; (os campos de email e cpf devem ser sempre únicos no banco de dados);
+    -   Atualizar as informações do cliente no banco de dados.
 
-</details>
-
-<details>
-<summary><b>Listar Clientes</b></summary>
+13. **Listar clientes**
 
 #### `GET` `/cliente`
 
-Essa é a rota que será chamada quando o usuário logado quiser listar todos os clientes cadastrados.
+Esse endpoint deverá listar todos os clientes cadastrados.
 
-</details>
+Validações:
 
-<details>
-<summary><b>Detalhar Cliente</b></summary>
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   O endpoint deverá responder com todos os clientes cadastrados no sistema.
+
+14. **Detalhar cliente**
 
 #### `GET` `/cliente/:id`
 
-Essa é a rota que será chamada quando o usuário logado quiser obter um de seus clientes cadastrados.  
+Esse endpoint deverá apresentar os dados do cliente do id informado como parâmetro na rota.
 
-Critérios de aceite:
+Validações:
 
-    -   Validar se existe cliente para o id enviado como parâmetro na rota.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar se o id de cliente informado existe;
+    -   Consultar o cliente no banco de dados pelo id dado.
 
-</details>
-
-</details>
-
----
-
-<details>
-<summary>3ª Sprint</summary>
-<br>
-
-<details>
-<summary><b>Banco de Dados</b></summary>
-<br>
-
-Crie as seguintes tabelas e colunas abaixo: 
-
-**ATENÇÃO! Os nomes das tabelas e das colunas a serem criados devem seguir exatamente os nomes listados abaixo.**
-
--   pedidos
-    -   id
-    -   cliente_id
-    -   observacao
-    -   valor_total
--   pedido_produtos
-    -   id
-    -   pedido_id
-    -   produto_id
-    -   quantidade_produto
-    -   valor_produto
--   produtos
-    -   produto_imagem
-</details>
-
----
-
-## **ATENÇÃO**: Todas as funcionalidades (endpoints) a seguir, a partir desse ponto, deverão exigir o token de autenticação do usuário logado, recebendo no header com o formato Bearer Token. Portanto, em cada funcionalidade será necessário validar o token informado.
-
----
-
-<details>
-<summary><b>Cadastrar Pedido</b></summary>
+15. **Cadastrar pedido**
 
 #### `POST` `/pedido`
 
-Essa é a rota que será utilizada para cadastrar um novo pedido no sistema.
+ Esse endpoint permite o cadastro de pedidos.
 
-**Lembre-se:** Cada pedido deverá conter ao menos um produto vinculado.
+Validações:
 
-**Atenção:** As propriedades produto_id e quantidade_produto devem ser informadas dentro de um array e para cada produto deverá ser criado um objeto neste array, como ilustrado no objeto de requisição abaixo.
-Só deverá ser cadastrado o pedido caso todos produtos vinculados ao pedido realmente existão no banco de dados.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Validar o preenchimento dos campos obrigatórios;
+    -   Validar se existe cliente para o id enviado no corpo (body) da requisição;
+    -   Validar se existe produto para cada produto_id informado dentro do array enviado no corpo (body) da requisição;
+    -   Validar se existe a quantidade em estoque de cada produto existente dentro do array, de acordo com a quantidade informada no corpo (body) da requisição;
+    -   O pedido deverá ser cadastrado, apenas, se todos os produtos estiverem validados;
+    -   Enviar e-mail para o cliente notificando que o pedido foi efetuado com sucesso;
+    -   Cadastrar o pedido no banco de dados.
 
-```javascript
-// Corpo da requisição para cadastro de pedido (body)
-{
-    "cliente_id": 1,
-    "observacao": "Em caso de ausência recomendo deixar com algum vizinho",
-    "pedido_produtos": [
-        {
-            "produto_id": 1,
-            "quantidade_produto": 10
-        },
-        {
-            "produto_id": 2,
-            "quantidade_produto": 20
-        }
-    ]
-}
-```
-
-Critérios de aceite:
-
-    -   Validar os campos obrigatórios:
-        -   cliente_id
-        -   pedido_produtos
-            -   produto_id
-            -   quantidade_produto
-    -   Validar se existe cliente para o id enviado no corpo (body) da requisição.
-    -   Validar se existe produto para cada produto_id informado dentro do array enviado no corpo (body) da requisição.
-    -   Validar se existe a quantidade em estoque de cada produto existente dentro do array, de acordo com a quantidade informada no corpo (body) da requisição.
-    -   O pedido deverá ser cadastrado, apenas, se todos os produtos estiverem validados. 
-    -   Enviar e-mail para o cliente notificando que o pedido foi efetuado com sucesso.   
-
-</details>
-
-<details>
-<summary><b>Listar Pedidos</b></summary>
+16. **Listar pedidos**
 
 #### `GET` `/pedido`
 
-Essa é a rota que será chamada quando o usuário logado quiser listar todos os pedidos cadastrados.
+ Esse endpoint lista os pedidos cadastrados no sistema, com filtro opcional de cliente.
 
-Deveremos incluir um parâmetro do tipo query **cliente_id** para que seja possível consultar pedidos por clientes, de modo, que serão filtrados de acordo com o id de um cliente.
+Validações:
 
-```javascript
-// Resposta para listagem de pedido (body)
-[
-    {
-        "pedido": {
-            "id": 1,
-            "valor_total": 230010,
-            "observacao": null,
-            "cliente_id": 1
-        },
-        "pedido_produtos": [
-            {
-                "id": 1,
-                "quantidade_produto": 1,
-                "valor_produto": 10,
-                "pedido_id": 1,
-                "produto_id": 1
-            },
-            {
-                "id": 2,
-                "quantidade_produto": 2,
-                "valor_produto": 230000,
-                "pedido_id": 1,
-                "produto_id": 2
-            }
-        ]
-    }
-]
-```
-
-Critérios de aceite:
-
-    - Caso seja enviado o parâmetro do tipo query **cliente_id**, filtrar os pedidos de acordo com o cliente, caso o id do cliente informado exista.
-    - Caso não seja informado o parâmetro do tipo query **cliente_id** todos os pedidos cadastrados deverão ser retornados.
+    -   Validar se o token foi enviado no header da requisição (Bearer Token);
+    -   Verificar se o token enviado é válido;
+    -   Caso não seja informado um id de cliente como parâmetro do tipo query, o endpoint deverá responder com todos os pedidos cadastrados no sistema;
+    -  Caso seja informado um id de cliente como parâmetro do tipo query, o endpoint deverá responder com todos os pedidos cadastrados no sistema relativo ao cliente informado.
 
 </details>
 
-<details>
-<summary><b>Aplicar validação na exclusão de produto</b></summary>
-<br>
 
-Deverá ser aplicada uma regra de negócio que não permitirá exclusão de produto que tenha sido registrado em algum pedido.
+## Deploy
 
-Critérios de aceite:
+Para enviar mudanças ou atualizações de um ambiente de implantação para outro, da aplicação que teve seu desenvolvimento concluído,podendo ser o principal ou algum intermediário, utilizamos o https://embarrassed-kerchief-goat.cyclic.app/
 
-    - Validar se o produto que está sendo excluído não está vinculado a nenhum pedido, caso estiver, não poderá ser excluído e deverá ser retornada uma mensagem indicando o motivo.
+## Como contribuir para o projeto
 
-</details>
+1. Faça um fork do projeto.
+2. Crie uma nova branch com as suas alterações: `git checkout -b my-feature`
+3. Salve as alterações e crie uma mensagem de commit contanto o que você fez: `git commit -m "feature: My new feature"`
+4. Envie as alterações: `git push origin my-feature`
 
-<details>
-<summary><b>Aprimorar cadastro/atualização de produto</b></summary>
-<br>
+## Autoras
 
-Deverão ser aprimorados o cadastro e a atualização de produto para permitir vincular uma imagem a um produto. 
-Deverá ser criada uma coluna `produto_imagem` para que seja possível efetuar o vínculo entre a imagem e o produto.
+[Daniel Vitor](https://github.com/danieldevprogrammer)
 
-Critérios de aceite:
-    
-    - O campo `produto_imagem` deve ser opcional, mas, em caso de ser enviado no corpo da requisição deveremos processar a imagem vinculada a essa propriedade e armazenar a imagem em um servidor de armazenamento (Supabase, Blackblaze, etc...)
-    - Armazenar na coluna `produto_imagem` a URL que possibilita visualizar a imagem que foi efetuada upload para o servidor de armazenamento.
+[Hélio Ribeiro](https://github.com/helio020)
 
-**Lembre-se:** A URL retornada deve ser válida, ou seja, ao ser clicada deve possibilitar visualizar a imagem que foi feito upload.
+[Matheus Tavares](https://github.com/matheuzeba)
 
-**ATENÇÃO:** Abaixo segue o exemplo de uma URL fictícia, mas que no caso, ilustra o que o serviço de armazenamento do Blackblaze retornaria após upload efetuado com sucesso, portanto essa seria no caso a URL que armazaremos na coluna `produto_imagem` no banco de dados.
+[Maxson Almeida](https://github.com/maxsonferovante)
 
-```javascript
-// Resposta cadastro/atualização de produto (body)
-{
-    "descricao": "Motorola moto g9 plus",
-    "quantidade_estoque": 100,
-    "valor": 15000,
-    "categoria_id": 2,
-    "produto_imagem": "https://s3.us-east-005.backblazeb2.com/desafio-final.jpg"
-}
-```
+[Renan Nobre](https://github.com/nsRenan)
 
-</details>
+## Licença
 
-<details>
-<summary><b>Aprimorar exclusão de produto</b></summary>
-<br>
-
-Deverá ser aprimorada a exclusão de produto para que quando o produto for excluído também seja removida a imagem vinculada a ele na servidor de armazenamento.
-
-Critérios de aceite:
-
-    - Na exclusão do produto a imagem vinculada a este produto deverá ser excluída do servidor de armazenamento.
-    
-</details>
-
-</details>
-
-## Aulas úteis:
-
--   [Envio de e-mails](https://aulas.cubos.academy/turma/3ab67d07-5445-4780-984d-b01eaf98a8e7/aulas/973bfcdc-ea6f-49b5-aeec-3750beda2a24)
--   [Validações e boas práticas](https://aulas.cubos.academy/turma/3ab67d07-5445-4780-984d-b01eaf98a8e7/aulas/744b2a2a-deb4-4af8-8dfd-28424c67d943)
--   [Deploy](https://aulas.cubos.academy/turma/3ab67d07-5445-4780-984d-b01eaf98a8e7/aulas/6504e3a9-adce-4f69-bb90-d8bda4538bac)
--   [Testes com Jest](https://aulas.cubos.academy/turma/3ab67d07-5445-4780-984d-b01eaf98a8e7/aulas/f88a4714-70dd-4b66-8039-0df89f4398cb)
--   [Metodologias Ágeis](https://aulas.cubos.academy/turma/3ab67d07-5445-4780-984d-b01eaf98a8e7/aulas/f6d51fc9-7a51-438a-ae7a-11abda7f1bf2)
--   [Upload de arquivos](https://aulas.cubos.academy/turma/3ab67d07-5445-4780-984d-b01eaf98a8e7/aulas/71355ea8-5192-4e0b-bf99-5be80bd0efba)
-
-###### tags: `back-end` `módulo 5` `nodeJS` `PostgreSQL` `API REST` `desafio`
+[MIT](LICENSE)
