@@ -335,7 +335,7 @@ Para enviar mudanças ou atualizações de um ambiente de implantação para out
 3. Salve as alterações e crie uma mensagem de commit contanto o que você fez: `git commit -m "feature: My new feature"`
 4. Envie as alterações: `git push origin my-feature`
 
-## Autoras
+## Autores
 
 [Daniel Vitor](https://github.com/danieldevprogrammer)
 
